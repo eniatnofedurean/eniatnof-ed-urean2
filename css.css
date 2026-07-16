@@ -7,8 +7,13 @@
 }
 
 body {
-    background: url('bg.png') no-repeat center center fixed;
-    background-size: cover;
+    /* RACIKAN GRADASI KOSMIK: Perpaduan warna Indigo, Ungu, dan Biru Gelap 
+       yang menciptakan kontras sempurna agar efek kaca buram (glassmorphism) menyala hebat */
+    background: radial-gradient(circle at 20% 20%, #1cdf14 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, #e9ff32 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, #88ff74 0%, #fefffd 100%);
+    background-color: #ffffff; 
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,8 +28,9 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 42, 0.4); 
+    background: radial-gradient(#ffffff00 50%, rgb(217 255 207 / 60%) 100%); 
     z-index: 1;
+    pointer-events: none;
 }
 
 .main-page {
@@ -47,7 +53,7 @@ body::before {
     padding: 18px 45px;
     color: #ffffff;
     background: rgba(255, 255, 255, 0.1);          
-    backdrop-filter: blur(2px); 
+    backdrop-filter: blur(12px); 
     -webkit-backdrop-filter: blur(12px);          
     border: 1px solid rgba(255, 255, 255, 0.25);   
     border-radius: 5px;
@@ -56,7 +62,6 @@ body::before {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);  
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
     
-    /* PERBAIKAN: Mengunci teks berada tepat di tengah tombol */
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -112,17 +117,17 @@ body::before {
     mix-blend-mode: screen; 
     animation: minecraftGlint 2s linear infinite;
     pointer-events: none;
-    z-index: 1; /* Glint berada di lapisan bawah teks */
+    z-index: 1; 
 }
 
-/* PERBAIKAN UTAMA: Mengangkat teks melayang paling depan menembus glint */
+/* Mengangkat teks melayang paling depan menembus glint */
 .btn-text {
     position: relative;
-    z-index: 2; /* Angka 2 lebih besar dari z-index lapisan glint */
+    z-index: 2; 
     pointer-events: none; 
 }
 
-/* 3. PENGAMAN JAVASCRIPT: Memastikan teks asli hilang saat mantra mulai diketik JS */
+/* 3. PENGAMAN JAVASCRIPT */
 .btn-transparent.clicked .btn-text::before,
 .btn-transparent.vanish .btn-text::before {
     display: none !important;
@@ -158,7 +163,7 @@ body::before {
 } 
 
 /* ======================================================= */
-/* KODE FINAL: GAMBAR BESAR MURNI BERPUTAR UNLIMITED       */
+/* KODE FINAL: STAGE 2 - TEKS MENIMPA DI TENGAH GAMBAR     */
 /* ======================================================= */
 
 /* LAPISAN 1 (Pembungkus) */
@@ -170,26 +175,46 @@ body::before {
     opacity: 0;
     pointer-events: none;
     z-index: 5;
-    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease;
+    transition: transform 1.2s cubic-bezier(0, 1.27, 0.9, 0.98), opacity 0.8s ease;
+    
+    display: grid;
+    place-items: center;
 }
 
-/* Memicu pembungkus membesar dari tengah */
+/* Memicu seluruh elemen Stage 2 membesar bersamaan */
 .popup-wrapper.show {
     opacity: 1;
     pointer-events: auto;
     transform: translate(-50%, -50%) scale(1); 
 }
 
-/* LAPISAN 2 (Gambar Asli): Ukuran Besar 900px */
+/* LAPISAN 2 (Gambar Asli): Ukuran Besar Berputar di Belakang Teks */
 .popup-img {
     max-width: 900px; 
     height: auto;
     display: block;
     filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.5)); 
-    z-index: 5;
+    grid-area: 1 / 1; 
+    z-index: 5; 
     animation: spinClockwiseUnlimited 12s linear infinite;
 }
 
+/* Mengunci Teks Melayang Tepat di Tengah Menimpa Gambar */
+.stage2-text {
+    grid-area: 1 / 1; 
+    z-index: 6; 
+    pointer-events: none; 
+    
+    color: #ffffff;
+    font-size: 3rem; 
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-align: center;
+    text-transform: uppercase; 
+    text-shadow: 0 4px 20px rgb(255 237 89 / 90%), 0 0 30px rgba(0, 0, 0, 0.8); 
+}
+
+/* Jalur perputaran gambar asli */
 @keyframes spinClockwiseUnlimited {
     0% {
         transform: rotate(0deg);
